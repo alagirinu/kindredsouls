@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #fdf6ec;
+    --deep: #1a0a00;
+    --gold: #c9963a;
+    --rose: #c4546a;
+    --choc: #3d1a08;
+    --mocha: #7a3b1e;
+    --mint: #8bbfaa;
+    --warm: #e8c99a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--rose);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: screen;
+  }
+  .cursor-trail {
+    width: 32px; height: 32px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: fixed;
+    top: 0; left: 0;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.4s ease, opacity 0.4s ease;
+    opacity: 0.5;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 2rem;
+    background: radial-gradient(ellipse at 30% 50%, #3d1208 0%, #1a0a00 60%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9963a' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Floating music notes */
+  .notes-field {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .note {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: floatNote 8s ease-in-out infinite;
+    color: var(--gold);
+  }
+  .note:nth-child(1)  { left: 8%;  animation-delay: 0s;    font-size: 2rem; }
+  .note:nth-child(2)  { left: 18%; animation-delay: 1.2s;  font-size: 1.2rem; }
+  .note:nth-child(3)  { left: 32%; animation-delay: 2.4s;  font-size: 1.8rem; }
+  .note:nth-child(4)  { left: 55%; animation-delay: 0.8s;  font-size: 1rem; }
+  .note:nth-child(5)  { left: 70%; animation-delay: 3s;    font-size: 2.2rem; }
+  .note:nth-child(6)  { left: 82%; animation-delay: 1.6s;  font-size: 1.4rem; }
+  .note:nth-child(7)  { left: 92%; animation-delay: 4s;    font-size: 1rem; }
+  .note:nth-child(8)  { left: 44%; animation-delay: 5s;    font-size: 1.6rem; }
+
+  @keyframes floatNote {
+    0%   { opacity: 0; transform: translateY(100vh) rotate(-15deg); }
+    10%  { opacity: 0.6; }
+    80%  { opacity: 0.4; }
+    100% { opacity: 0; transform: translateY(-20vh) rotate(15deg); }
+  }
+
+  .age-badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.05;
+    color: var(--cream);
+    opacity: 0;
+    animation: fadeUp 1s 0.6s forwards;
+    text-shadow: 0 0 80px rgba(201,150,58,0.3);
+  }
+
+  .hero-title span { color: var(--rose); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 2.5vw, 1.4rem);
+    font-style: italic;
+    color: var(--warm);
+    margin-top: 1.2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.9s forwards;
+    max-width: 500px;
+  }
+
+  .heart-pulse {
+    font-size: 2.5rem;
+    margin-top: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards;
+    display: inline-block;
+  }
+  .heart-pulse span { animation: pulse 1.4s ease-in-out infinite; display: inline-block; }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.25); }
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    opacity: 0.6;
+    animation: bob 2s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SECTIONS ── */
+  section {
+    padding: 6rem 2rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 400;
+    font-style: italic;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+  }
+
+  /* ── MUSIC SECTION ── */
+  .music-section {
+    background: linear-gradient(135deg, #2a0f05 0%, #1a0a00 100%);
+    max-width: 100%;
+    padding: 6rem 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .music-section::before {
+    content: '♪';
+    position: absolute;
+    font-size: 20rem;
+    color: var(--gold);
+    opacity: 0.03;
+    right: -3rem;
+    top: -3rem;
+    line-height: 1;
+  }
+  .music-inner { max-width: 900px; margin: 0 auto; }
+
+  .yuvan-card {
+    background: linear-gradient(135deg, rgba(201,150,58,0.12), rgba(196,84,106,0.08));
+    border: 1px solid rgba(201,150,58,0.2);
+    border-radius: 2px;
+    padding: 2.5rem;
+    margin-top: 2rem;
+    position: relative;
+  }
+  .yuvan-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 8rem;
+    color: var(--rose);
+    opacity: 0.15;
+    position: absolute;
+    top: -1.5rem;
+    left: 1.5rem;
+    line-height: 1;
+  }
+
+  .yuvan-quote {
+    font-size: 1.3rem;
+    font-style: italic;
+    line-height: 1.7;
+    color: var(--warm);
+    margin-bottom: 1rem;
+  }
+  .yuvan-attr {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+  }
+
+  .song-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2.5rem;
+  }
+  .song-item {
+    background: rgba(255,255,255,0.04);
+    border-left: 2px solid var(--rose);
+    padding: 1rem 1.2rem;
+    transition: all 0.3s ease;
+    cursor: default;
+  }
+  .song-item:hover {
+    background: rgba(196,84,106,0.1);
+    transform: translateX(4px);
+  }
+  .song-name {
+    font-size: 1rem;
+    color: var(--cream);
+    margin-bottom: 0.2rem;
+  }
+  .song-film {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  /* ── CHOCOLATE SECTION ── */
+  .choc-section {
+    position: relative;
+  }
+
+  .choc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 2rem;
+    border: 1px solid rgba(201,150,58,0.2);
+  }
+  .choc-block {
+    aspect-ratio: 1;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border: 1px solid rgba(201,150,58,0.1);
+    transition: all 0.4s ease;
+    background: rgba(61,26,8,0.3);
+    cursor: default;
+  }
+  .choc-block:hover {
+    background: rgba(201,150,58,0.12);
+    transform: scale(1.02);
+  }
+  .choc-icon { font-size: 2rem; margin-bottom: 0.6rem; }
+  .choc-name { font-size: 0.85rem; color: var(--warm); font-style: italic; }
+
+  /* ── TRAVEL SECTION ── */
+  .travel-section { background: linear-gradient(135deg, #0a1a12 0%, #1a0a00 100%); max-width: 100%; padding: 6rem 2rem; }
+  .travel-inner { max-width: 900px; margin: 0 auto; }
+
+  .place-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+  .place-card {
+    background: rgba(139,191,170,0.06);
+    border: 1px solid rgba(139,191,170,0.15);
+    padding: 1.5rem;
+    border-radius: 1px;
+    transition: all 0.3s ease;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .place-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--mint), transparent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+  }
+  .place-card:hover::after { transform: scaleX(1); }
+  .place-card:hover { background: rgba(139,191,170,0.1); }
+  .place-emoji { font-size: 1.8rem; margin-bottom: 0.5rem; }
+  .place-name { font-size: 1rem; color: var(--cream); margin-bottom: 0.2rem; }
+  .place-desc { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--mint); letter-spacing: 0.1em; }
+
+  /* ── ICECREAM SECTION ── */
+  .ice-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+  .ice-tag {
+    padding: 0.6rem 1.4rem;
+    border: 1px solid rgba(232,201,154,0.25);
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--warm);
+    transition: all 0.3s ease;
+    cursor: default;
+    background: rgba(255,255,255,0.03);
+  }
+  .ice-tag:hover {
+    border-color: var(--rose);
+    color: var(--rose);
+    background: rgba(196,84,106,0.08);
+  }
+
+  /* ── LETTER SECTION ── */
+  .letter-section {
+    background: linear-gradient(135deg, #1a0a00, #2a0f05);
+    max-width: 100%;
+    padding: 7rem 2rem;
+  }
+  .letter-inner {
+    max-width: 680px;
+    margin: 0 auto;
+  }
+  .letter-body {
+    font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+    line-height: 1.9;
+    color: var(--warm);
+    font-style: italic;
+  }
+  .letter-body p { margin-bottom: 1.5rem; }
+  .letter-body strong { color: var(--cream); font-style: normal; font-weight: 400; }
+
+  .letter-sign {
+    margin-top: 3rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-style: italic;
+    color: var(--rose);
+  }
+
+  /* ── LINKS ── */
+  .memory-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 3rem;
+    justify-content: center;
+  }
+  .memory-link {
+    padding: 0.8rem 1.8rem;
+    border: 1px solid rgba(201,150,58,0.35);
+    color: var(--gold);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    background: transparent;
+  }
+  .memory-link:hover {
+    background: rgba(201,150,58,0.1);
+    border-color: var(--gold);
+    color: var(--cream);
+    transform: translateY(-2px);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #0d0500;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: rgba(201,150,58,0.4);
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0 3rem;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(201,150,58,0.3), transparent);
+  }
+  .divider-icon { color: var(--rose); font-size: 0.8rem; }
+
+  /* ── COUNTDOWN ── */
+  .age-display {
+    font-family: 'Space Mono', monospace;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: var(--gold);
+    letter-spacing: -0.02em;
+    margin: 1rem 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .age-number { color: var(--rose); }
+  .age-label { font-size: 0.4em; color: var(--warm); letter-spacing: 0.1em; font-style: italic; font-family: 'Cormorant Garamond', serif; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .choc-grid { grid-template-columns: repeat(2, 1fr); }
+    .song-list { grid-template-columns: 1fr; }
+    .choc-block { aspect-ratio: auto; padding: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-trail" id="trail"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="notes-field">
+    <div class="note">♩</div>
+    <div class="note">♪</div>
+    <div class="note">♫</div>
+    <div class="note">♬</div>
+    <div class="note">♩</div>
+    <div class="note">♪</div>
+    <div class="note">𝄞</div>
+    <div class="note">♫</div>
+  </div>
+
+  <div class="age-badge">09 · 04 · 1994 → 09 · 04 · 2026</div>
+
+  <h1 class="hero-title">
+    Happy<br><span>Birthday,</span><br>My Love
+  </h1>
+
+  <p class="hero-sub">Thirty two years of you, and the world is still not enough to hold how beautiful you are</p>
+
+  <div class="heart-pulse"><span>❤️</span></div>
+
+  <div class="age-display">
+    <span class="age-number">32</span>
+    <span class="age-label">years of wonder, music & love</span>
+  </div>
+
+  <div class="scroll-hint">↓ scroll with love ↓</div>
+</div>
+
+<!-- MUSIC SECTION -->
+<div class="music-section">
+  <div class="music-inner">
+    <div class="section-label">♫ for the music lover</div>
+    <h2 class="section-title" style="color:var(--cream)">The World of<br><span style="color:var(--gold)">Yuvan Shankar Raja</span></h2>
+    <div class="divider"><div class="divider-icon">♪</div></div>
+
+    <div class="yuvan-card">
+      <p class="yuvan-quote">
+        "Music is not just heard — it is felt, lived, and remembered. And the music we fall in love to becomes a part of who we are, forever."
+      </p>
+      <p class="yuvan-attr">— our shared soundtrack ♫</p>
+    </div>
+
+    <p style="margin-top:2rem; font-size:1.1rem; color:var(--warm); font-style:italic; line-height:1.8;">
+      Some songs feel like they were written for two specific people. 
+      A genius who taught a generation how to feel, how to hurt beautifully, 
+      how to fall in love with sound itself.
+    </p>
+
+    <div class="song-list">
+      <div class="song-item">
+        <div class="song-name">Munbe Vaa</div>
+        <div class="song-film">SILLUNU ORU KAADHAL</div>
+      </div>
+      <div class="song-item">
+        <div class="song-name">Oru Maalai</div>
+        <div class="song-film">GHAJINI</div>
+      </div>
+      <div class="song-item">
+        <div class="song-name">Vinnai Thaandi Varuvaaya</div>
+        <div class="song-film">VTV</div>
+      </div>
+      <div class="song-item">
+        <div class="song-name">Aaromale</div>
+        <div class="song-film">VTV</div>
+      </div>
+      <div class="song-item">
+        <div class="song-name">Kannamoochi Yenada</div>
+        <div class="song-film">KANDUKONDAIN</div>
+      </div>
+      <div class="song-item">
+        <div class="song-name">Nenjukkul Peidhidum</div>
+        <div class="song-film">VTV</div>
+      </div>
+      <div class="song-item">
+        <div class="song-name">Uyire Uyire</div>
+        <div class="song-film">KAAKHA KAAKHA</div>
+      </div>
+      <div class="song-item">
+        <div class="song-name">Yaaradi Nee Mohini</div>
+        <div class="song-film">YAARADI NEE MOHINI</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHOCOLATE & ICE CREAM -->
+<section>
+  <div class="section-label">🍫 the sweeter things</div>
+  <h2 class="section-title">Chocolate Dreams<br><span style="color:var(--rose)">&amp; Ice Cream Days</span></h2>
+  <div class="divider"><div class="divider-icon">♡</div></div>
+
+  <div class="choc-grid">
+    <div class="choc-block">
+      <div class="choc-icon">🍫</div>
+      <div class="choc-name">Dark Truffle</div>
+    </div>
+    <div class="choc-block">
+      <div class="choc-icon">🍬</div>
+      <div class="choc-name">Milk Caramel</div>
+    </div>
+    <div class="choc-block">
+      <div class="choc-icon">🍰</div>
+      <div class="choc-name">Choc Lava Cake</div>
+    </div>
+    <div class="choc-block">
+      <div class="choc-icon">🍪</div>
+      <div class="choc-name">Choc Chip Bliss</div>
+    </div>
+    <div class="choc-block">
+      <div class="choc-icon">🎂</div>
+      <div class="choc-name">Birthday Cake</div>
+    </div>
+    <div class="choc-block">
+      <div class="choc-icon">🍭</div>
+      <div class="choc-name">Hazelnut Dream</div>
+    </div>
+  </div>
+
+  <p style="margin-top:2.5rem; font-size:1.1rem; font-style:italic; color:var(--warm); line-height:1.8;">
+    They say the best things in life are sweet. 
+    And I have always believed the sweetest thing in my life is you — 
+    you just come with a bonus love for chocolate.
+  </p>
+
+  <div style="margin-top:3rem;">
+    <div class="section-label">🍦 favourite scoops</div>
+    <div class="ice-grid">
+      <div class="ice-tag">🍦 Vanilla Bean</div>
+      <div class="ice-tag">🍫 Chocolate Fudge</div>
+      <div class="ice-tag">🍓 Strawberry Swirl</div>
+      <div class="ice-tag">🥭 Mango Sorbet</div>
+      <div class="ice-tag">🍨 Butter Pecan</div>
+      <div class="ice-tag">🍬 Cookies & Cream</div>
+      <div class="ice-tag">☕ Coffee Gelato</div>
+      <div class="ice-tag">🫐 Blueberry Cheesecake</div>
+    </div>
+  </div>
+</section>
+
+<!-- TRAVEL SECTION -->
+<div class="travel-section">
+  <div class="travel-inner">
+    <div class="section-label">✈️ for the explorer</div>
+    <h2 class="section-title" style="color:var(--cream)">Places We Must<br><span style="color:var(--mint)">Go Together</span></h2>
+    <div class="divider"><div class="divider-icon">✦</div></div>
+
+    <p style="font-size:1.1rem; font-style:italic; color:rgba(232,201,154,0.8); line-height:1.8; margin-bottom:2rem;">
+      The world is too beautiful to see from only one window. 
+      Every road is a new song, every destination a new verse. 
+      Our travel list is long, and our time together is longer.
+    </p>
+
+    <div class="place-cards">
+      <div class="place-card">
+        <div class="place-emoji">🏔️</div>
+        <div class="place-name">Coorg, Karnataka</div>
+        <div class="place-desc">MISTY HILLS · COFFEE</div>
+      </div>
+      <div class="place-card">
+        <div class="place-emoji">🌊</div>
+        <div class="place-name">Pondicherry</div>
+        <div class="place-desc">FRENCH TOWN · SEA</div>
+      </div>
+      <div class="place-card">
+        <div class="place-emoji">🏝️</div>
+        <div class="place-name">Andaman Islands</div>
+        <div class="place-desc">TURQUOISE · PEACE</div>
+      </div>
+      <div class="place-card">
+        <div class="place-emoji">🕌</div>
+        <div class="place-name">Hampi</div>
+        <div class="place-desc">RUINS · HISTORY</div>
+      </div>
+      <div class="place-card">
+        <div class="place-emoji">🌿</div>
+        <div class="place-name">Munnar, Kerala</div>
+        <div class="place-desc">TEA GARDENS · FOG</div>
+      </div>
+      <div class="place-card">
+        <div class="place-emoji">🏜️</div>
+        <div class="place-name">Rajasthan</div>
+        <div class="place-desc">PALACES · SUNSETS</div>
+      </div>
+      <div class="place-card">
+        <div class="place-emoji">⛩️</div>
+        <div class="place-name">Kyoto, Japan</div>
+        <div class="place-desc">CHERRY BLOSSOMS</div>
+      </div>
+      <div class="place-card">
+        <div class="place-emoji">🛶</div>
+        <div class="place-name">Alleppey Backwaters</div>
+        <div class="place-desc">HOUSEBOAT · CALM</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LETTER -->
+<div class="letter-section">
+  <div class="letter-inner">
+    <div class="section-label">from the heart</div>
+    <h2 class="section-title" style="color:var(--rose)">A Letter,<br>on your birthday</h2>
+    <div class="divider"><div class="divider-icon">❤️</div></div>
+
+    <div class="letter-body">
+      <p>
+        You came into my life like the first note of a Yuvan melody — 
+        <strong>quiet, unexpected, and then impossible to stop thinking about.</strong>
+      </p>
+      <p>
+        I have seen you love music the way most people breathe — 
+        like it is not optional, like the world makes more sense when there is a song playing. 
+        And slowly, you taught me to hear things I never noticed before.
+      </p>
+      <p>
+        I have watched your face when you eat chocolate. 
+        That particular expression — <strong>that one — is one of my favourite things in the world.</strong> 
+        Do not let anyone ever tell you to eat less of it.
+      </p>
+      <p>
+        I know you want to go everywhere. You have a kind of hunger for the world 
+        that I deeply admire. <strong>Every place you have ever talked about visiting, 
+        I want to take you there.</strong> Every single one.
+      </p>
+      <p>
+        You love truly. You feel deeply. You express little — 
+        and yet somehow the people who love you can always feel it. 
+        <strong>I feel it every day.</strong>
+      </p>
+      <p>
+        Happy 32nd birthday. You deserve every good thing this world has. 
+        Starting with today.
+      </p>
+    </div>
+
+    <div class="letter-sign">— With all my love, always ❤️</div>
+
+    <div class="memory-links">
+      <a href="https://alagirinu.github.io/kindredsouls/memory1.html" class="memory-link">Our Beginning</a>
+      <a href="https://alagirinu.github.io/kindredsouls/memory2.html" class="memory-link">Your Smile</a>
+      <a href="https://alagirinu.github.io/kindredsouls/memory3.html" class="memory-link">Crazy Moments</a>
+      <a href="https://alagirinu.github.io/kindredsouls/memory4.html" class="memory-link">Trips Together</a>
+      <a href="https://alagirinu.github.io/kindredsouls/memory5.html" class="memory-link">Forever Us</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  made with ❤️ &nbsp;·&nbsp; 09 April 2026 &nbsp;·&nbsp; kindred souls, always
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const trail = document.getElementById('trail');
+  let mouseX = 0, mouseY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.transform = `translate(${mouseX - 6}px, ${mouseY - 6}px)`;
+    setTimeout(() => {
+      trail.style.transform = `translate(${mouseX - 16}px, ${mouseY - 16}px)`;
+    }, 80);
+  });
+
+  // Scroll fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.song-item, .choc-block, .place-card, .ice-tag, .yuvan-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // Age calculator — she turns 32 today
+  // Already set in HTML as 32
+</script>
+</body>
+</html>
